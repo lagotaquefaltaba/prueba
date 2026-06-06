@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" sizes="192x192" href="https://i.imgur.com/17A2JLJ.jpg">
+<link rel="icon" sizes="512x512" href="https://i.imgur.com/17A2JLJ.jpg">
+<link rel="apple-touch-icon" href="https://i.imgur.com/17A2JLJ.jpg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radio La Gota 1075 FM</title>
+
+<link rel="manifest" href="manifest.json">
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/service-worker.js');
+  });
+}
+</script>
+
+<meta name="theme-color" content="#07142e">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#07142e;padding:10px;padding-bottom:90px;}
+.contenedor{max-width:450px;margin:auto;background:linear-gradient(180deg,#07142e,#0f2a55,#07142e);border-radius:24px;box-shadow:0 15px 35px rgba(0,0,0,0.5);padding:25px;text-align:center;border:1px solid rgba(255,255,255,0.05)}
+.logo-radio{width:100%;max-width:260px;height:auto;border-radius:20px;box-shadow:0 10px 25px rgba(0,0,0,0.6);margin-bottom:25px;border:3px solid #00d2ff;transition:transform 0.3s ease}
+.logo-radio:hover{transform:scale(1.02)}
+h1{color:#fff;font-size:24px;margin-bottom:5px;letter-spacing:1px;text-transform:uppercase;text-shadow:0 2px 4px rgba(0,0,0,0.5)}
+.frecuencia{color:#00d2ff;font-size:16px;font-weight:bold;margin-bottom:25px;letter-spacing:3px}
+.reproductor-caja{background:rgba(255,255,255,0.03);border-radius:16px;padding:15px;margin-bottom:25px;border:1px solid rgba(255,255,255,0.05)}
+.boton{display:flex;align-items:center;justify-content:center;width:100%;padding:14px;margin-bottom:12px;border-radius:14px;color:#fff;text-decoration:none;font-size:16px;font-weight:bold;transition:all 0.2s ease;box-shadow:0 4px 10px rgba(0,0,0,0.2);border:none;cursor:pointer}
+.boton:active{transform:scale(0.98)}
+.wp{background:#25d366}
+.wp2{background:#128c7e}
+.fb{background:#1877f2}
+.ig{background:linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)}
+.tt{background:#000000;border:1px solid #25f4ee}
+.texto-ayuda{color:#8a99ad;font-size:12px;margin-top:20px;line-height:1.5;background:rgba(0,0,0,0.2);padding:12px;border-radius:10px}
+.boton-instalar-nuevo{display:none;position:fixed;bottom:15px;left:50%;transform:translateX(-50%);background:#ffcc00;color:#000;border:none;padding:15px 35px;font-size:15px;font-weight:bold;border-radius:50px;cursor:pointer;box-shadow:0 8px 20px rgba(255,204,0,0.4);z-index:9999;animation:latido 2s infinite;letter-spacing:1px;text-transform:uppercase}
+@keyframes latido{0%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.05);box-shadow:0 8px 25px rgba(255,204,0,0.6)}100%{transform:translateX(-50%) scale(1)}}
+</style>
+</head>
+<body>
+
+<img src="https://lagota.radiostream123.com/favicon.ico" style="display:none;" alt="">
+
+<div class="contenedor">
+    <img class="logo-radio" src="https://i.imgur.com/17A2JLJ.jpg" alt="Radio La Gota Logo">
+    <h1>Radio La Gota</h1>
+    <div class="frecuencia">107.5 FM</div>
+
+    <div class="reproductor-caja">
+        <audio id="reproductorPrincipal" controls preload="auto" playsinline style="width:100%;border-radius:12px;">
+            <source src="https://stream.radiostream123.com/3932/stream/1/" type="audio/mpeg">
+            Tu navegador no soporta audio.
+        </audio>
+    </div>
+
+    <a class="boton wp" href="https://wa.me/543462344790?text=Hola%20Radio%20La%20Gota!%20Les%20escribo%20desde%20la%20App..." target="_blank">Enviar Mensaje</a>
+    <a class="boton wp2" href="https://wa.me/543462344790" target="_blank">Pedí tu Tema</a>
+    <a class="boton fb" href="https://www.facebook.com/turadiolagota" target="_blank">Facebook</a>
+    <a class="boton ig" href="https://www.instagram.com/lagotaquefaltaba" target="_blank">Instagram</a>
+    <a class="boton tt" href="https://www.tiktok.com/@lagotaquefaltaba" target="_blank">TikTok</a>
+
+    <div class="texto-ayuda">
+        📱 Si estás entrando desde Facebook 👉 tocá los 3 puntitos de arriba y elegí "Abrir en navegador"<br>
+        👆 Si no te sale: andá a 3 puntitos → <b>"Agregar a pantalla de inicio"</b> 📲
+    </div>
+
+</div>
+
+<button id="botonInstalar" class="boton-instalar-nuevo">📲 INSTALAR LA GOTA</button>
+
+<script>
+// BOTÓN INSTALAR
+let eventoInstalar;
+const botonInstalar = document.getElementById('botonInstalar');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    eventoInstalar = e;
+    botonInstalar.style.display = 'block';
+});
+
+botonInstalar.addEventListener('click', async () => {
+    if (!eventoInstalar) {
+        alert('👉 Copiá el link y abrilo en Google Chrome desde tu celular para poder instalar la App.');
+        return;
+    }
+    eventoInstalar.prompt();
+    const { outcome } = await eventoInstalar.userChoice;
+    if (outcome === 'accepted') {
+        botonInstalar.style.display = 'none';
+        eventoInstalar = null;
+    }
+});
+
+window.addEventListener('appinstalled', () => {
+    botonInstalar.style.display = 'none';
+    eventoInstalar = null;
+    alert('¡Gracias por instalar Radio La Gota! 📻📲');
+});
+</script>
+
+</body>
+</html>
